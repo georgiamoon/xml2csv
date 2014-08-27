@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="UTF-8" />
+    <title>xmlparser</title>
+  </head>
+  <body>
+<div id="csvdata"></div>
+<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+<script>
+          $(document).ready(function(){
+         $.ajax({
+          type: "GET",
+          url: "detail.xml", //file to parse
+          dataType: "xml",
+          success: function(xml) {  
+            //console.log(xml);
+           $(xml).find('zone').find('node').each(function(index){ //get to the items to go thru
+                var id = $(this).attr('id'); //attribute selector, not element bc this data file has attributes (see note)
+                var created = $(this).attr('created');
+                var lat = $(this).attr('lat');
+                var lon = $(this).attr('lon');
+                var status = $(this).attr('status');
+                var title = $(this).attr('title');
+                var devices = $(this).attr('devices');
+            $('<div></div>').html(id+','+created+','+status+','+lat+','+lon+','+title+','+devices).appendTo('#csvdata');
+           });
+          }
+         });
+        });
+          </script>
+
+          <!-- Followed this tutorial: http://www.daigo.org/2010/08/simple-xml-to-html-table-using-jquery/ 
+            plus learning about XML attributes vs elements, and different accessors for them.
+
+            XML Elements
+            <zone>
+              <node></node>
+            </zone>
+            
+            XML Attributes
+            <node id="###" lat="####"></node
+
+          -->
+  </body>
+</html>
